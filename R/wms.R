@@ -15,11 +15,6 @@ wmsDependency <- function() {
 #' single-tile/untiled/nontiled layers, shared WMS sources, and
 #' GetFeatureInfo-powered identify.
 #' @inheritParams leaflet::addWMSTiles
-#' @param layers vector or list of WMS layers to show. The name of the layer is
-#'   used as the \code{layerId} (for \code{\link[leaflet]{removeTiles}}
-#'   purposes)
-#' @param options List of further options. See
-#'   \code{\link[leaflet]{WMSTileOptions}}
 #' @param popupOptions List of popup options. See
 #'   \code{\link[leaflet]{popupOptions}}. Default is NULL.
 #' @inherit leaflet::addWMSTiles return
@@ -40,20 +35,21 @@ wmsDependency <- function() {
 #'         transparent = TRUE,
 #'         format = "image/png",
 #'         info_format = "text/html"))
-addWMS <- function(map, baseUrl, layers = NULL, group = NULL,
-                   options = WMSTileOptions(), attribution = NULL,
+addWMS <- function(map, baseUrl, layerId = NULL, group = NULL,
+                   options = WMSTileOptions(),
+                   attribution = NULL,
+                   layers = NULL,
                    popupOptions = NULL,
                    data = getMapData(map)) {
 
   if (is.null(layers)) {
-    stop("layers is a required argument")
+    stop("layers is a required argument with comma-separated list of WMS layers to show")
   }
   options$attribution <- attribution
   options$layers <- layers
-  options$popupOptions <- popupOptions
 
   map$dependencies <- c(map$dependencies, wmsDependency())
 
-  invokeMethod(map, data, "addWMS", baseUrl, layers,
-               group, options)
+  invokeMethod(map, data, "addWMS", baseUrl, layerId,
+               group, options, popupOptions)
 }
