@@ -16,24 +16,10 @@ LeafletWidget.methods.addContextmenu = function() {
           label: e.data.relatedTarget.options.label
         };
         obj = Object.assign(obj, data);
+      } else {
+        obj = Object.assign(obj, e.data.latlng);
       }
       Shiny.setInputValue(map.id + "_contextmenu_select", obj, {priority: "event"});
-    });
-    map.on("contextmenu.show", function(e) {
-      //console.log("contextmenu.show!!!!");
-      //console.log("e"); console.log(e);
-    });
-    map.on("contextmenu.hide", function(e) {
-      //console.log("contextmenu.hide!!!!");
-      //console.log("e"); console.log(e);
-    });
-    map.on("contextmenu.additem", function(e) {
-      //console.log("contextmenu.additem!!!!");
-      //console.log("e"); console.log(e);
-    });
-    map.on("contextmenu.removeitem", function(e) {
-      //console.log("contextmenu.removeitem!!!!");
-      //console.log(e);
     });
   }
 };
@@ -53,10 +39,24 @@ LeafletWidget.methods.insertItemContextmenu = function(options, index) {
   this.contextmenu.insertItem(options, index);
 };
 LeafletWidget.methods.removeItemContextmenu = function(index) {
-  this.contextmenu.removeItem(index);
+  var map = this;
+  if (Array.isArray(index)) {
+    index.forEach(function(i) {
+      map.contextmenu.removeItem(index);
+    })
+  } else {
+    map.contextmenu.removeItem(index);
+  }
 };
 LeafletWidget.methods.setDisabledContextmenu = function(index, disabled) {
-  this.contextmenu.setDisabled(index, disabled);
+  var map = this;
+  if (Array.isArray(index)) {
+    index.forEach(function(i) {
+      map.contextmenu.setDisabled(i, disabled);
+    })
+  } else {
+    map.contextmenu.setDisabled(index, disabled);
+  }
 };
 LeafletWidget.methods.removeallItemsContextmenu = function() {
   this.contextmenu.removeAllItems();

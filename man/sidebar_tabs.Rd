@@ -13,7 +13,7 @@ sidebar_tabs(id = "sidebar", iconList = NULL, ...)
 \item{iconList}{A list of icons to be shown, when the sidebar is collapsed.
 The list is required and must match the amount of \code{\link{sidebar_pane}}.}
 
-\item{...}{The individual \code{\link{sidebar_pane}}.}
+\item{...}{The individual \code{\link{sidebar_pane}}'s.}
 }
 \value{
 A \code{shiny.tag} with individual sidebar panes
@@ -24,8 +24,14 @@ Create a Sidebar
 \examples{
 \dontrun{
 library(shiny)
+
+# run example app showing a single sidebar
 runApp(paste0(system.file("examples", package = "leaflet.extras2"),
               "/sidebar_app.R"))
+
+# run example app showing two sidebars
+runApp(paste0(system.file("examples", package = "leaflet.extras2"),
+              "/multi_sidebar_app.R"))
 }
 }
 \references{

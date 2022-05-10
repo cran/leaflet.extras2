@@ -16,7 +16,8 @@ timesliderOptions(
   range = FALSE,
   follow = FALSE,
   alwaysShowDate = FALSE,
-  rezoom = NULL
+  rezoom = NULL,
+  sameDate = FALSE
 )
 }
 \arguments{
@@ -32,8 +33,8 @@ Default is \code{FALSE}}
 \item{startTimeIdx}{where to start looking for a timestring
 Default is \code{0}}
 
-\item{timeStrLength}{the size of yyyy-mm-dd hh:mm:ss - if milliseconds are present this will be larger
-Default is \code{19}}
+\item{timeStrLength}{the size of \code{yyyy-mm-dd hh:mm:ss} - if milliseconds are
+present this will be larger. Default is \code{19}}
 
 \item{maxValue}{Set the maximum value of the slider. Default is \code{-1}}
 
@@ -55,6 +56,9 @@ Default is \code{FALSE}}
 
 \item{rezoom}{Use the rezoom property to ensure the markers being displayed
 remain in view. Default is \code{NULL}}
+
+\item{sameDate}{Show only data with the current selected time.
+Default is \code{FALSE}}
 }
 \value{
 A list of options for \code{addTimeslider}

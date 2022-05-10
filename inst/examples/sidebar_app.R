@@ -6,6 +6,7 @@ library(leaflet.extras2)
 data(breweries91, package = "leaflet")
 
 ui <- fluidPage(
+  tags$head(tags$style(".btn-default {display: block;}")),
   h4("Leaflet Sidebar Plugin"),
   splitLayout(cellWidths = c("20%", "80%"),
               tagList(
@@ -35,14 +36,17 @@ ui <- fluidPage(
                     title = "profile", id = "profile_id", icon = icon("wrench"),
                     tagList(
                       textInput("caption", "Caption", "Data Summary"),
-                      selectInput("label", "Label", choices = c("brewery", "address", "zipcode", "village")),
+                      selectInput("label", "Label",
+                                  choices = c("brewery", "address",
+                                              "zipcode", "village")),
                       passwordInput("password", "Password:"),
                       actionButton("go", "Go"),
                       verbatimTextOutput("value")
                     )
                   ),
                   sidebar_pane(
-                    title = "messages", id = "messages_id", icon = icon("person"),
+                    title = "messages", id = "messages_id",
+                    icon = icon("person", verify_fa = FALSE),
                     tagList(
                       checkboxGroupInput("variable", "Variables to show:",
                         c("Cylinders" = "cyl",
@@ -63,13 +67,13 @@ server <- function(input, output, session) {
       addTiles() %>%
       addSidebar(
         id = "mysidebarid",
-        options = list(position = "left", fit = TRUE)
+        options = list(position = "left")
       )
   })
   observe({
     req(input$obs)
     df <- breweries91[sample.int(nrow(breweries91), input$obs), ]
-    bbox <- st_bbox(df)
+    bbox <- suppressWarnings(st_bbox(df))
     leafletProxy("map", session) %>%
       clearGroup("pts") %>%
       addCircleMarkers(data = df,

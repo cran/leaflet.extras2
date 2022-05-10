@@ -15,14 +15,19 @@ timesliderDependencies <- function() {
 #' Add Time Slider to Leaflet
 #'
 #' The \href{https://github.com/dwilhelm89/LeafletSlider}{LeafletSlider plugin}
-#' enables you to dynamically add and remove Markers on a map by using a
+#' enables you to dynamically add and remove Markers/Lines on a map by using a
 #' JQuery UI slider.
 #' @param map a map widget
-#' @param data data must be a POINT Simple Feature with a time column.
+#' @param data data must be a Simple Feature collection of type POINT or LINESTRING
+#'    with a column of class Date or POSIXct.
+#' @param ordertime boolean value indicating whether to order the data by the
+#'    time column. The slider will adopt the order of the timestamps.
+#'    The default is \code{TRUE}.
 #' @param options List of additional options. See \code{\link{timesliderOptions}}
 #' @family Timeslider Functions
 #' @references \url{https://github.com/dwilhelm89/LeafletSlider}
 #' @export
+#' @inheritParams leaflet::addCircleMarkers
 #' @inherit leaflet::addMarkers return
 #' @examples \dontrun{
 #' library(leaflet)
@@ -44,18 +49,59 @@ timesliderDependencies <- function() {
 #'                range = TRUE)) %>%
 #'   setView(-72, 22, 4)
 #' }
-addTimeslider <- function(map, data, options = timesliderOptions()){
+addTimeslider <- function(map, data, radius = 10,
+                          stroke = TRUE, color = "#03F",
+                          weight = 5, opacity = 0.5, fill = TRUE, fillColor = color,
+                          fillOpacity = 0.2, dashArray = NULL,
+                          popup = NULL, popupOptions = NULL,
+                          label = NULL, labelOptions = NULL,
+                          ordertime = TRUE,
+                          options = timesliderOptions()){
 
+  ## Style Options
+  data$radius = leaflet::evalFormula(radius, data)
+  data$stroke = leaflet::evalFormula(stroke, data)
+  data$color = leaflet::evalFormula(color, data)
+  data$weight = leaflet::evalFormula(weight, data)
+  data$fillColor = leaflet::evalFormula(fillColor, data)
+  data$opacity = leaflet::evalFormula(opacity, data)
+  data$fill = leaflet::evalFormula(fill, data)
+  data$dashArray = leaflet::evalFormula(dashArray, data)
+  data$fillOpacity = leaflet::evalFormula(fillOpacity, data)
+
+  ## Order by time
+  if (ordertime) {
+    data <- data[order(data[[options$timeAttribute]]),]
+  }
+
+  ## Popup
+  if (!is.null(popup) && !isFALSE(popup)) {
+    data$popup = leaflet::evalFormula(popup, data)
+  }
+
+  ## Label
+  if (!is.null(label) && !isFALSE(label)) {
+    data$label = leaflet::evalFormula(label, data)
+  }
+
+  ## BBOX
+  if (!requireNamespace("sf")) {
+    stop("The package `sf` is needed for this plugin. ",
+         "Please install it with:\ninstall.packages('sf')")
+  }
+  bbox <- sf::st_bbox(data)
+
+  ## Make GeoJSON
   if (!requireNamespace("geojsonsf")) {
     stop("The package `geojsonsf` is needed for this plugin. ",
          "Please install it with:\ninstall.packages('geojsonsf')")
   }
-
   data <- geojsonsf::sf_geojson(data)
 
+  ## Add Deps and invoke Leaflet
   map$dependencies <- c(map$dependencies, timesliderDependencies())
-
-  invokeMethod(map, NULL, "addTimeslider", data, options)
+  invokeMethod(map, NULL, "addTimeslider", data, options, popupOptions, labelOptions) %>%
+    expandLimits(bbox[c(2,4)], bbox[c(1,3)])
 }
 
 #' timesliderOptions
@@ -69,8 +115,8 @@ addTimeslider <- function(map, data, options = timesliderOptions()){
 #'   Default is \code{FALSE}
 #' @param startTimeIdx where to start looking for a timestring
 #'   Default is \code{0}
-#' @param timeStrLength the size of yyyy-mm-dd hh:mm:ss - if milliseconds are present this will be larger
-#'   Default is \code{19}
+#' @param timeStrLength the size of \code{yyyy-mm-dd hh:mm:ss} - if milliseconds are
+#'   present this will be larger. Default is \code{19}
 #' @param maxValue Set the maximum value of the slider. Default is \code{-1}
 #' @param minValue Set the minimum value of the slider. Default is \code{0}
 #' @param showAllOnStart Specify whether all markers should be initially visible.
@@ -85,6 +131,8 @@ addTimeslider <- function(map, data, options = timesliderOptions()){
 #' @param alwaysShowDate Should the Date always be visible. Default is \code{FALSE}
 #' @param rezoom Use the rezoom property to ensure the markers being displayed
 #'   remain in view. Default is \code{NULL}
+#' @param sameDate Show only data with the current selected time.
+#'   Default is \code{FALSE}
 #' @family Timeslider Functions
 #' @return A list of options for \code{addTimeslider}
 #' @references \url{https://github.com/dwilhelm89/LeafletSlider}
@@ -101,7 +149,8 @@ timesliderOptions = function(
   range = FALSE,
   follow = FALSE,
   alwaysShowDate = FALSE,
-  rezoom = NULL) {
+  rezoom = NULL,
+  sameDate = FALSE) {
 
   leaflet::filterNULL(list(
     position = match.arg(position),
@@ -115,7 +164,8 @@ timesliderOptions = function(
     range = range,
     follow = follow,
     alwaysShowDate = alwaysShowDate,
-    rezoom = rezoom
+    rezoom = rezoom,
+    sameDate = sameDate
   ))
 }
 
