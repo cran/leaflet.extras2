@@ -4,7 +4,7 @@
 \alias{addSidebar}
 \title{Add a Sidebar Leaflet Control}
 \usage{
-addSidebar(map, id = "sidebar", options = list(position = "left"))
+addSidebar(map, id = "sidebar", options = list(position = "left"), ns = NULL)
 }
 \arguments{
 \item{map}{A leaflet map widget}
@@ -14,13 +14,14 @@ addSidebar(map, id = "sidebar", options = list(position = "left"))
 
 \item{options}{A named list with the only option \code{position}, which should
 be either \code{left} or \code{right}.}
+
+\item{ns}{The namespace function, if used in Shiny modules.}
 }
 \value{
 the new \code{map} object
 }
 \description{
-The sidebar plugin only works in a reactive environment (e.g Shiny), as the
-HTML must be created with \code{\link{sidebar_tabs}} and
+The sidebar HTML must be created with \code{\link{sidebar_tabs}} and
 \code{\link{sidebar_pane}} before
 \code{\link[leaflet]{leafletOutput}} is called.
 }
