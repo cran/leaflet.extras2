@@ -3,23 +3,22 @@ tangram_deps <- function() {
     htmlDependency(
       "lfx-tangram", "1.0.0",
       src = system.file("htmlwidgets/lfx-tangram", package = "leaflet.extras2"),
-      script = c("tangram.min.js",
-                 "leaflet.tangram.binding.js"))
+      script = c(
+        "tangram.min.js",
+        "leaflet.tangram.binding.js"
+      )
+    )
   )
 }
 
 #' Adds a Tangram layer to a Leaflet map in a Shiny App.
 #'
-#' @param map A leaflet map widget
 #' @param scene Path to a required \bold{.yaml} or \bold{.zip} file. If the file
 #'   is within the \code{/www} folder of a Shiny-App, only the filename must be
 #'   given, otherwise the full path is needed. See the
 #'   \href{https://github.com/tangrams/tangram}{Tangram repository} or the
 #'   \href{https://tangrams.readthedocs.io/en/latest/}{Tangram docs} for further
 #'   information on how to edit such a .yaml file.
-#' @param layerId A layer ID
-#' @param group The name of the group the newly created layer should belong to
-#'   (for \code{\link{clearGroup}} and \code{\link{addLayersControl}} purposes).
 #' @param options A list of further options. See the app in the
 #'   \code{examples/tangram} folder or the
 #'   \href{https://tangrams.readthedocs.io/en/latest/Overviews/Tangram-Overview/#leaflet}{docs}
@@ -27,6 +26,7 @@ tangram_deps <- function() {
 #' @note Only works correctly in a Shiny-App environment.
 #' @references \url{https://github.com/tangrams/tangram}
 #' @family Tangram Functions
+#' @inheritParams leaflet::addPolygons
 #' @inherit leaflet::addWMSTiles return
 #' @export
 #' @examples \dontrun{
@@ -46,8 +46,10 @@ tangram_deps <- function() {
 #'       addTangram(scene = scene, group = "tangram") %>%
 #'       addCircleMarkers(data = breweries91, group = "brews") %>%
 #'       setView(11, 49.4, 14) %>%
-#'       addLayersControl(baseGroups = c("tangram", "base"),
-#'                        overlayGroups = c("brews"))
+#'       addLayersControl(
+#'         baseGroups = c("tangram", "base"),
+#'         overlayGroups = c("brews")
+#'       )
 #'   })
 #' }
 #'
@@ -55,10 +57,12 @@ tangram_deps <- function() {
 #' }
 addTangram <- function(map, scene = NULL, layerId = NULL, group = NULL,
                        options = NULL) {
-
-  if ((is.null(scene) || !is.character(scene) || (!gsub(".*\\.", "", scene) %in% c("yaml", "zip")))) {
-    stop("The scene must point to a valid .yaml or .zip file.\n",
-         "See the documentation for further information.")
+  if ((is.null(scene) || !is.character(scene) ||
+    (!gsub(".*\\.", "", scene) %in% c("yaml", "zip")))) {
+    stop(
+      "The scene must point to a valid .yaml or .zip file.\n",
+      "See the documentation for further information."
+    )
   }
 
   tngrscene <- list(
@@ -67,12 +71,15 @@ addTangram <- function(map, scene = NULL, layerId = NULL, group = NULL,
       version = 1,
       src = dirname(scene),
       attachment = basename(scene)
-    ))
+    )
+  )
 
   map$dependencies <- c(map$dependencies, tngrscene, tangram_deps())
 
   options <- leaflet::filterNULL(c(list(scene = basename(scene)), options))
 
-  invokeMethod(map, NULL, "addTangram",
-               layerId, group, options)
+  invokeMethod(
+    map, NULL, "addTangram",
+    layerId, group, options
+  )
 }

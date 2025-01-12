@@ -15,8 +15,7 @@ addOpenweatherCurrent(
 \arguments{
 \item{map}{a map widget object created from \code{\link[leaflet]{leaflet}()}}
 
-\item{apikey}{a valid Openweathermap-API key. Get one from
-\href{https://openweathermap.org/api}{here}.}
+\item{apikey}{a valid Openweathermap-API key.}
 
 \item{group}{the name of the group the newly created layers should belong to
 (for \code{\link[leaflet]{clearGroup}} and \code{\link[leaflet]{addLayersControl}} purposes).
@@ -45,12 +44,14 @@ and if used in Shiny, a click on an icon will update a Shiny input at
 library(leaflet)
 library(leaflet.extras2)
 
-Sys.setenv("OPENWEATHERMAP" = 'Your_API_Key')
+Sys.setenv("OPENWEATHERMAP" = "Your_API_Key")
 
-leaflet()  \%>\%
-  addTiles() \%>\% setView(9, 50, 9) \%>\%
+leaflet() \%>\%
+  addTiles() \%>\%
+  setView(9, 50, 9) \%>\%
   addOpenweatherCurrent(options = openweatherCurrentOptions(
-    lang = "en", popup = TRUE))
+    lang = "en", popup = TRUE
+  ))
 }
 }
 \references{

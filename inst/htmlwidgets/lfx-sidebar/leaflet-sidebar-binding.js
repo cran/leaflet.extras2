@@ -3,21 +3,12 @@ LeafletWidget.methods.addSidebar = function(id, options) {
   (function(){
     var map = this;
 
-    // Check if run in Shiny
-    /*
-    if (!HTMLWidgets.shinyMode) {
-      console.error("The sidebar-plugin is not called within a Shiny application and therefore does not work.")
-      return(0)
-    }
-    */
-
     // Add css class ('sidebar-map') to map
     if (!map._container.classList.contains('sidebar-map')) {
       map._container.classList.add('sidebar-map');
     }
 
     // Move Sidebar inside Map-Div
-    /*var mapid = "#"+map.id*/
     var mapid = "#" + (map.id ? map.id : map._container.id);
     if (options && options.fit === true) {
       // Append sidebar container to map div
@@ -26,7 +17,7 @@ LeafletWidget.methods.addSidebar = function(id, options) {
         mapdiv.className = 'leaflet-sidebar-container';
         $(mapdiv).appendTo($(mapid));
       }
-      $('.leafsidebar.collapsed').appendTo(mapid + ' .leaflet-sidebar-container');
+      $('#'+id).appendTo(mapid + ' .leaflet-sidebar-container');
 
       // Disable/Re-enable dragging+scrolling when user's cursor enters/exits the element
       var content = $('.leafsidebar-content');
@@ -49,8 +40,11 @@ LeafletWidget.methods.addSidebar = function(id, options) {
       _onClick: function() {
         if (L.DomUtil.hasClass(this, 'active')) {
           this._sidebar.close();
+          Shiny.setInputValue(id, null);
         } else if (!L.DomUtil.hasClass(this, 'disabled')) {
-          this._sidebar.open(this.querySelector('a').hash.slice(1));
+          const openid = this.querySelector('a').hash.slice(1);
+          this._sidebar.open(openid);
+          Shiny.setInputValue(id, openid);
           $(this.firstElementChild.attributes.href.nodeValue).trigger('shown');
         }
       }
@@ -73,16 +67,16 @@ LeafletWidget.methods.removeSidebar = function(sidebar_id) {
     var tid =
       typeof(sidebar_id) === "string" ?
         sidebar_id : Object.keys(map.sidebar)[0];
+
+    Shiny.setInputValue(tid, null);
+
     var sidebar = $(`#${tid}`);
     if (sidebar[0]) {
       // Remove left/right CSS
-      if (L.DomUtil.hasClass(sidebar[0], 'leafsidebar-left')) {
-        $('.sidebar-map .leaflet-left').css('left', 0);
-      } else {
-        $('.sidebar-map .leaflet-right').css('right', 0);
-      }
+      map._container.classList.remove("sidebar-map")
       // Remove Sidebar and Delete from map
       sidebar.remove();
+      $("#" + map.id + " .leaflet-sidebar-container").remove();
       delete map.sidebar[tid];
     }
   }
@@ -95,6 +89,9 @@ LeafletWidget.methods.closeSidebar = function(sidebar_id) {
     var tid =
       typeof(sidebar_id) === "string" ?
         sidebar_id : Object.keys(map.sidebar)[0];
+
+    Shiny.setInputValue(tid, null);
+
     if (map.sidebar[tid]) {
       map.sidebar[tid].close();
     }
@@ -108,6 +105,9 @@ LeafletWidget.methods.openSidebar = function(x) {
     var tid =
       typeof(x.sidebar_id) === "string" ?
         x.sidebar_id : Object.keys(map.sidebar)[0];
+
+    Shiny.setInputValue(tid, x.id);
+
     if (map.sidebar[tid]) {
       map.sidebar[tid].open(x.id);
     }

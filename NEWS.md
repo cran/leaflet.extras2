@@ -1,3 +1,15 @@
+# leaflet.extras2 1.3.0
+
+* Included [LayerGroup.Collision](https://github.com/MazeMap/Leaflet.LayerGroup.Collision) plugin
+* Included [LayerGroup.Conditional](https://github.com/Solfisk/Leaflet.LayerGroup.Conditional) plugin
+* Included [OSM Buildings](https://osmbuildings.org/documentation/leaflet/) plugin
+* New Function `addDivicon` adds `DivIcon` markers to Leaflet maps with support for custom HTML and CSS classes. See the example in `./inst/examples/divicons_html_app.R`
+* Added `addClusterCharts` to enable **pie** and **bar** charts in Marker clusters using `Leaflet.markercluster`, `d3` and `L.DivIcon`, with support for customizable category styling and various aggregation methods like **sum, min, max, mean**, and **median**.
+* The opened sidebar tab is returned as Shiny input using the `sidebar_tabs` ID. #67
+* allow `...` in `antpathOptions` to be able to set the pane (e.g.: `renderer= JS('L.svg({pane: "my-pane"})')`)
+* Switched from `geojsonsf` to `yyjsonr` (*heightgraph*, *timeslider*, *clustercharts*)
+* Fix for roxygen2 > 7.0.0. #1491
+
 # leaflet.extras2 1.2.2
 
 * Added `enableContextmenu` and `disableContextmenu`

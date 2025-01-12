@@ -17,8 +17,7 @@ addOpenweatherTiles(
 \arguments{
 \item{map}{a map widget object created from \code{\link[leaflet]{leaflet}()}}
 
-\item{apikey}{a valid OpenWeatherMap-API key. Get one from
-\href{https://openweathermap.org}{here}.}
+\item{apikey}{a valid OpenWeatherMap-API key.}
 
 \item{layers}{character vector of layers you wish to add to the map. The
 following layers are currently possible \code{c("clouds", "cloudsClassic",
@@ -53,10 +52,11 @@ Out of the box a legend image is only available for Pressure,
 library(leaflet)
 library(leaflet.extras2)
 
-Sys.setenv("OPENWEATHERMAP" = 'Your_API_Key')
+Sys.setenv("OPENWEATHERMAP" = "Your_API_Key")
 
-leaflet()  \%>\%
-  addTiles() \%>\% setView(9, 50, 6) \%>\%
+leaflet() \%>\%
+  addTiles() \%>\%
+  setView(9, 50, 6) \%>\%
   addOpenweatherTiles(layers = "wind")
 }
 }

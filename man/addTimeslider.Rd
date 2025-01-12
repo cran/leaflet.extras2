@@ -80,26 +80,27 @@ enables you to dynamically add and remove Markers/Lines on a map by using a
 JQuery UI slider.
 }
 \examples{
-\dontrun{
 library(leaflet)
 library(leaflet.extras2)
 library(sf)
-library(geojsonsf)
 
-data <- sf::st_as_sf(leaflet::atlStorms2005[1,])
+data <- sf::st_as_sf(leaflet::atlStorms2005[1, ])
 data <- st_cast(data, "POINT")
-data$time = as.POSIXct(
-  seq.POSIXt(Sys.time() - 1000, Sys.time(), length.out = nrow(data)))
+data$time <- as.POSIXct(
+  seq.POSIXt(Sys.time() - 1000, Sys.time(), length.out = nrow(data))
+)
 
 leaflet() \%>\%
   addTiles() \%>\%
-  addTimeslider(data = data,
-             options = timesliderOptions(
-               position = "topright",
-               timeAttribute = "time",
-               range = TRUE)) \%>\%
+  addTimeslider(
+    data = data,
+    options = timesliderOptions(
+      position = "topright",
+      timeAttribute = "time",
+      range = TRUE
+    )
+  ) \%>\%
   setView(-72, 22, 4)
-}
 }
 \references{
 \url{https://github.com/dwilhelm89/LeafletSlider}
