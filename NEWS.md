@@ -1,3 +1,8 @@
+# leaflet.extras2 1.3.1
+
+* Fix tests
+* Add select-inputs to sidebar-example
+
 # leaflet.extras2 1.3.0
 
 * Included [LayerGroup.Collision](https://github.com/MazeMap/Leaflet.LayerGroup.Collision) plugin

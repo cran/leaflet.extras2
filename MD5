@@ -1,11 +1,11 @@
-cc2810254b9478ede01d4a5d8e35e4ca *DESCRIPTION
+075b10d7efbef07903a29e03857b351f *DESCRIPTION
 9c25e1cdc3b5122842a6a70fab49a522 *LICENSE
 28b42f89ad5950a0afd5ef4b9d486781 *NAMESPACE
-65688963a5f6940388a5206d828c80c3 *NEWS.md
+794d047cfbf472cf83273af77f82be48 *NEWS.md
 1de9f5cee6d76c8848589a387eb5d2b3 *R/antpath.R
 0a53c496a9531137ade8f13bfb1844c6 *R/arrowhead.R
 a084b75784442a2206237e99689a1cae *R/buildings.R
-d28f16e9a68cd9ebf96b387b971dd4f3 *R/clusterCharts.R
+d2471024bbaffe549b279d086baabe46 *R/clusterCharts.R
 8086136ca086c863bed1271876d32e29 *R/contextmenu.R
 d943532cd328c092be1124be0d352471 *R/data_docs.R
 93be376a12c9a201e7c3531b3e6e81f1 *R/divicon.R
@@ -62,7 +62,7 @@ d87ea815e3e969a1cbcd82eb6351b419 *inst/examples/playback_app.R
 1d99ef49894de2eab4ece6f4ca1f054f *inst/examples/playback_app_divicon.R
 13d4922cf5775222b7c4cf73ea8ef2e7 *inst/examples/reachability_app.R
 3f7c2eca5fa0c2f10e6b4fe071b2888a *inst/examples/side_by_side_app.R
-d86e9d0db956aae34c0a1499472d8684 *inst/examples/sidebar_app.R
+5a61226385836a475c7fb84f410c404d *inst/examples/sidebar_app.R
 40749a8ade6d0d3472b617d7f7665722 *inst/examples/spin_app.R
 05c5181aaad69ea3cf8e2b4ce10dc484 *inst/examples/tangram/tangram_app.R
 2fead61443ba0cae98c02350226ed625 *inst/examples/tangram/www/pois.png
@@ -270,7 +270,7 @@ ff618b5dc4928d004d728439f6225633 *man/timesliderOptions.Rd
 c7c38f330d55e5558a40b4b4bd1591d0 *tests/testthat.R
 7cd6ca1538d9f8c7c27713d4072aa888 *tests/testthat/test-antpath.R
 a8b9793583dcb7a659d2f057eecc3302 *tests/testthat/test-arrowhead.R
-025249d2b96e2ba7fc4ee05daf18a2c9 *tests/testthat/test-clustercharts.R
+257ecce8d7d4939e7e1321c334aa2a13 *tests/testthat/test-clustercharts.R
 70e7000d6a45d89aa73fc0f8e455177a *tests/testthat/test-contextmenu.R
 666437e096f6e56d6a2a50261486e20a *tests/testthat/test-divicon.R
 c1356f7ca19edf7a2aea41986f62dab2 *tests/testthat/test-easyprint.R
